@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package org.appspot.apprtc.util;
+package com.moony.webrtcpractice.util;
 
 import java.io.IOException;
 import java.io.InputStream;

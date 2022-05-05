@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package org.appspot.apprtc;
+package com.moony.webrtcpractice;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -18,7 +18,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.Nullable;
-import org.appspot.apprtc.util.AppRTCUtils;
+import com.moony.webrtcpractice.util.AppRTCUtils;
 import org.webrtc.ThreadUtils;
 
 /**

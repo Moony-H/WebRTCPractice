@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package org.appspot.apprtc;
+package com.moony.webrtcpractice;
 
 import android.content.Context;
 import android.os.Environment;
@@ -34,8 +34,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.appspot.apprtc.AppRTCClient.SignalingParameters;
-import org.appspot.apprtc.RecordedAudioToFileController;
+import com.moony.webrtcpractice.AppRTCClient.SignalingParameters;
+import com.moony.webrtcpractice.RecordedAudioToFileController;
 import org.webrtc.AddIceObserver;
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
@@ -175,7 +175,7 @@ public class PeerConnectionClient {
   private final boolean dataChannelEnabled;
   // Enable RtcEventLog.
   @Nullable
-  private RtcEventLog rtcEventLog;
+  private org.appspot.apprtc.RtcEventLog rtcEventLog;
   // Implements the WebRtcAudioRecordSamplesReadyCallback interface and writes
   // recorded audio samples to an output file.
   @Nullable private RecordedAudioToFileController saveRecordedAudioToFile;
@@ -678,7 +678,7 @@ public class PeerConnectionClient {
       Log.d(TAG, "RtcEventLog is disabled.");
       return;
     }
-    rtcEventLog = new RtcEventLog(peerConnection);
+    rtcEventLog = new org.appspot.apprtc.RtcEventLog(peerConnection);
     rtcEventLog.start(createRtcEventLogOutputFile());
   }
 

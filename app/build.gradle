@@ -41,7 +41,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //webrtc
-    implementation files('libs/autobanh.jar')
-    implementation 'org.webrtc:google-webrtc:1.0.+'
+    implementation files('libs/libwebrtc_19324.aar')
+
+    implementation 'org.webrtc:google-webrtc:1.0.32006'
+    implementation 'io.crossbar.autobahn:autobahn-android:21.7.1'
 
 }

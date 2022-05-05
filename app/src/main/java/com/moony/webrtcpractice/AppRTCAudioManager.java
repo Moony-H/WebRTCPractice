@@ -25,7 +25,7 @@ import androidx.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.appspot.apprtc.util.AppRTCUtils;
+import com.moony.webrtcpractice.util.AppRTCUtils;
 import org.webrtc.ThreadUtils;
 
 /**
@@ -93,10 +93,10 @@ public class AppRTCAudioManager {
   // relative to the view screen of a device and can therefore be used to
   // assist device switching (close to ear <=> use headset earpiece if
   // available, far from ear <=> use speaker phone).
-  @Nullable private org.appspot.apprtc.AppRTCProximitySensor proximitySensor;
+  @Nullable private com.moony.webrtcpractice.AppRTCProximitySensor proximitySensor;
 
   // Handles all tasks related to Bluetooth headset devices.
-  private final org.appspot.apprtc.AppRTCBluetoothManager bluetoothManager;
+  private final com.moony.webrtcpractice.AppRTCBluetoothManager bluetoothManager;
 
   // Contains a list of available audio devices. A Set collection is used to
   // avoid duplicate elements.
@@ -166,7 +166,7 @@ public class AppRTCAudioManager {
     ThreadUtils.checkIsOnMainThread();
     apprtcContext = context;
     audioManager = ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
-    bluetoothManager = org.appspot.apprtc.AppRTCBluetoothManager.create(context, this);
+    bluetoothManager = com.moony.webrtcpractice.AppRTCBluetoothManager.create(context, this);
     wiredHeadsetReceiver = new WiredHeadsetReceiver();
     amState = AudioManagerState.UNINITIALIZED;
 
@@ -183,7 +183,7 @@ public class AppRTCAudioManager {
     // Create and initialize the proximity sensor.
     // Tablet devices (e.g. Nexus 7) does not support proximity sensors.
     // Note that, the sensor will not be active until start() has been called.
-    proximitySensor = org.appspot.apprtc.AppRTCProximitySensor.create(context,
+    proximitySensor = com.moony.webrtcpractice.AppRTCProximitySensor.create(context,
         // This method will be called each time a state change is detected.
         // Example: user holds their hand over the device (closer than ~5 cm),
         // or removes their hand from the device.
@@ -473,18 +473,18 @@ public class AppRTCAudioManager {
     // Check if any Bluetooth headset is connected. The internal BT state will
     // change accordingly.
     // TODO(henrika): perhaps wrap required state into BT manager.
-    if (bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.HEADSET_AVAILABLE
-        || bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.HEADSET_UNAVAILABLE
-        || bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_DISCONNECTING) {
+    if (bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.HEADSET_AVAILABLE
+        || bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.HEADSET_UNAVAILABLE
+        || bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_DISCONNECTING) {
       bluetoothManager.updateDevice();
     }
 
     // Update the set of available audio devices.
     Set<AudioDevice> newAudioDevices = new HashSet<>();
 
-    if (bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_CONNECTED
-        || bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_CONNECTING
-        || bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.HEADSET_AVAILABLE) {
+    if (bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_CONNECTED
+        || bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_CONNECTING
+        || bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.HEADSET_AVAILABLE) {
       newAudioDevices.add(AudioDevice.BLUETOOTH);
     }
 
@@ -504,7 +504,7 @@ public class AppRTCAudioManager {
     // Update the existing audio device set.
     audioDevices = newAudioDevices;
     // Correct user selected audio devices if needed.
-    if (bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.HEADSET_UNAVAILABLE
+    if (bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.HEADSET_UNAVAILABLE
         && userSelectedAudioDevice == AudioDevice.BLUETOOTH) {
       // If BT is not available, it can't be the user selection.
       userSelectedAudioDevice = AudioDevice.NONE;
@@ -523,21 +523,21 @@ public class AppRTCAudioManager {
     // Need to start Bluetooth if it is available and user either selected it explicitly or
     // user did not select any output device.
     boolean needBluetoothAudioStart =
-        bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.HEADSET_AVAILABLE
+        bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.HEADSET_AVAILABLE
         && (userSelectedAudioDevice == AudioDevice.NONE
                || userSelectedAudioDevice == AudioDevice.BLUETOOTH);
 
     // Need to stop Bluetooth audio if user selected different device and
     // Bluetooth SCO connection is established or in the process.
     boolean needBluetoothAudioStop =
-        (bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_CONNECTED
-            || bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_CONNECTING)
+        (bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_CONNECTED
+            || bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_CONNECTING)
         && (userSelectedAudioDevice != AudioDevice.NONE
                && userSelectedAudioDevice != AudioDevice.BLUETOOTH);
 
-    if (bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.HEADSET_AVAILABLE
-        || bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_CONNECTING
-        || bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_CONNECTED) {
+    if (bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.HEADSET_AVAILABLE
+        || bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_CONNECTING
+        || bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_CONNECTED) {
       Log.d(TAG, "Need BT audio: start=" + needBluetoothAudioStart + ", "
               + "stop=" + needBluetoothAudioStop + ", "
               + "BT state=" + bluetoothManager.getState());
@@ -561,7 +561,7 @@ public class AppRTCAudioManager {
     // Update selected audio device.
     final AudioDevice newAudioDevice;
 
-    if (bluetoothManager.getState() == org.appspot.apprtc.AppRTCBluetoothManager.State.SCO_CONNECTED) {
+    if (bluetoothManager.getState() == com.moony.webrtcpractice.AppRTCBluetoothManager.State.SCO_CONNECTED) {
       // If a Bluetooth is connected, then it should be used as output audio
       // device. Note that it is not sufficient that a headset is available;
       // an active SCO channel must also be up and running.

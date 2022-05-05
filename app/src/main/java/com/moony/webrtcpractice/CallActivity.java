@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package org.appspot.apprtc;
+package com.moony.webrtcpractice;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -32,17 +32,20 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+
+import com.moony.webrtcpractice.AppRTCAudioManager;
+
 import java.io.IOException;
 import java.lang.RuntimeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.appspot.apprtc.AppRTCAudioManager.AudioDevice;
-import org.appspot.apprtc.AppRTCAudioManager.AudioManagerEvents;
-import org.appspot.apprtc.AppRTCClient.RoomConnectionParameters;
-import org.appspot.apprtc.AppRTCClient.SignalingParameters;
-import org.appspot.apprtc.PeerConnectionClient.DataChannelParameters;
-import org.appspot.apprtc.PeerConnectionClient.PeerConnectionParameters;
+import com.moony.webrtcpractice.AppRTCAudioManager.AudioDevice;
+import com.moony.webrtcpractice.AppRTCAudioManager.AudioManagerEvents;
+import com.moony.webrtcpractice.AppRTCClient.RoomConnectionParameters;
+import com.moony.webrtcpractice.AppRTCClient.SignalingParameters;
+import com.moony.webrtcpractice.PeerConnectionClient.DataChannelParameters;
+import com.moony.webrtcpractice.PeerConnectionClient.PeerConnectionParameters;
 import org.webrtc.Camera1Enumerator;
 import org.webrtc.Camera2Enumerator;
 import org.webrtc.CameraEnumerator;
@@ -150,9 +153,9 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
 
   private final ProxyVideoSink remoteProxyRenderer = new ProxyVideoSink();
   private final ProxyVideoSink localProxyVideoSink = new ProxyVideoSink();
-  @Nullable private PeerConnectionClient peerConnectionClient;
+  @Nullable private org.appspot.apprtc.PeerConnectionClient peerConnectionClient;
   @Nullable
-  private AppRTCClient appRtcClient;
+  private org.appspot.apprtc.AppRTCClient appRtcClient;
   @Nullable
   private SignalingParameters signalingParameters;
   @Nullable private AppRTCAudioManager audioManager;
@@ -181,8 +184,8 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   private boolean isSwappedFeeds;
 
   // Controls
-  private CallFragment callFragment;
-  private HudFragment hudFragment;
+  private org.appspot.apprtc.CallFragment callFragment;
+  private org.appspot.apprtc.HudFragment hudFragment;
   private CpuMonitor cpuMonitor;
 
   @Override
@@ -191,7 +194,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   @SuppressWarnings("deprecation")
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Thread.setDefaultUncaughtExceptionHandler(new UnhandledExceptionHandler(this));
+    Thread.setDefaultUncaughtExceptionHandler(new org.appspot.apprtc.UnhandledExceptionHandler(this));
 
     // Set window styles for fullscreen-window size. Needs to be done before
     // adding content.
@@ -207,8 +210,8 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     // Create UI controls.
     pipRenderer = findViewById(R.id.pip_video_view);
     fullscreenRenderer = findViewById(R.id.fullscreen_video_view);
-    callFragment = new CallFragment();
-    hudFragment = new HudFragment();
+    callFragment = new org.appspot.apprtc.CallFragment();
+    hudFragment = new org.appspot.apprtc.HudFragment();
 
     // Show/hide call control fragment on view click.
     View.OnClickListener listener = new View.OnClickListener() {
@@ -332,11 +335,11 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
 
     // Create connection client. Use DirectRTCClient if room name is an IP otherwise use the
     // standard WebSocketRTCClient.
-    if (loopback || !DirectRTCClient.IP_PATTERN.matcher(roomId).matches()) {
-      appRtcClient = new WebSocketRTCClient(this);
+    if (loopback || !org.appspot.apprtc.DirectRTCClient.IP_PATTERN.matcher(roomId).matches()) {
+      appRtcClient = new org.appspot.apprtc.WebSocketRTCClient(this);
     } else {
       Log.i(TAG, "Using DirectRTCClient because room name looks like an IP.");
-      appRtcClient = new DirectRTCClient(this);
+      appRtcClient = new org.appspot.apprtc.DirectRTCClient(this);
     }
     // Create connection parameters.
     String urlParameters = intent.getStringExtra(EXTRA_URLPARAMETERS);
@@ -369,7 +372,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     }
 
     // Create peer connection client.
-    peerConnectionClient = new PeerConnectionClient(
+    peerConnectionClient = new org.appspot.apprtc.PeerConnectionClient(
         getApplicationContext(), eglBase, peerConnectionParameters, CallActivity.this);
     PeerConnectionFactory.Options options = new PeerConnectionFactory.Options();
     if (loopback) {

@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package org.appspot.apprtc;
+package com.moony.webrtcpractice;
 
 import android.os.Handler;
 import android.util.Log;

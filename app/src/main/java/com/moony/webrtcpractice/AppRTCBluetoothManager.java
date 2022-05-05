@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package org.appspot.apprtc;
+package com.moony.webrtcpractice;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -31,7 +31,7 @@ import com.moony.webrtcpractice.AppRTCAudioManager;
 
 import java.util.List;
 import java.util.Set;
-import org.appspot.apprtc.util.AppRTCUtils;
+import com.moony.webrtcpractice.util.AppRTCUtils;
 import org.webrtc.ThreadUtils;
 
 /**
@@ -234,6 +234,7 @@ public class AppRTCBluetoothManager {
    * Note that the AppRTCAudioManager is also involved in driving this state
    * change.
    */
+  @SuppressLint("MissingPermission")
   public void start() {
     ThreadUtils.checkIsOnMainThread();
     Log.d(TAG, "start");
@@ -370,6 +371,7 @@ public class AppRTCBluetoothManager {
    * HEADSET_AVAILABLE and `bluetoothDevice` will be mapped to the connected
    * device if available.
    */
+  @SuppressLint("MissingPermission")
   public void updateDevice() {
     if (bluetoothState == State.UNINITIALIZED || bluetoothHeadset == null) {
       return;
@@ -378,7 +380,7 @@ public class AppRTCBluetoothManager {
     // Get connected devices for the headset profile. Returns the set of
     // devices which are in state STATE_CONNECTED. The BluetoothDevice class
     // is just a thin wrapper for a Bluetooth hardware address.
-    List<BluetoothDevice> devices = bluetoothHeadset.getConnectedDevices();
+    @SuppressLint("MissingPermission") List<BluetoothDevice> devices = bluetoothHeadset.getConnectedDevices();
     if (devices.isEmpty()) {
       bluetoothDevice = null;
       bluetoothState = State.HEADSET_UNAVAILABLE;

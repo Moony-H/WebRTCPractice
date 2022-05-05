@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package org.appspot.apprtc;
+package com.moony.webrtcpractice;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -23,7 +23,7 @@ import org.webrtc.audio.JavaAudioDeviceModule;
  * Settings activity for AppRTC.
  */
 public class SettingsActivity extends Activity implements OnSharedPreferenceChangeListener {
-  private SettingsFragment settingsFragment;
+  private org.appspot.apprtc.SettingsFragment settingsFragment;
   private String keyprefVideoCall;
   private String keyprefScreencapture;
   private String keyprefCamera2;
@@ -107,7 +107,7 @@ public class SettingsActivity extends Activity implements OnSharedPreferenceChan
     keyprefEnabledRtcEventLog = getString(R.string.pref_enable_rtceventlog_key);
 
     // Display the fragment as the main content.
-    settingsFragment = new SettingsFragment();
+    settingsFragment = new org.appspot.apprtc.SettingsFragment();
     getFragmentManager()
         .beginTransaction()
         .replace(android.R.id.content, settingsFragment)
